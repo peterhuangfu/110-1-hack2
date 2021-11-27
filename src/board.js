@@ -26,15 +26,14 @@ function Board(props) {
       <div className="board-discuss-container">
         {posts.length ?
           <div className="articles-container">
-            {posts.map((e, i) => (
+            {posts.map((post, i) => (
               <div className="article-post" key={i}>
                 <div className="article-prefix">
-                  <span className="each-tag">【心得】</span> &nbsp;
-                  <span className="each-id" onClick={() => props.navigate(`/post/${e.postId}`)}>Hello</span>
+                  <span className="each-tag">【Hackathon 2】</span> &nbsp;
+                  <span className="each-id" onClick={() => props.navigate(`/post/${post.postId}`)}>{post.title}</span>
                 </div>
                 <div className="article-postfix">
-                  <span className="each-name">HuangFu</span> &nbsp;&nbsp;
-                  <span className="each-time">{moment(new Date()).format('YYYY-MM-DD')}</span>
+                  <span className="each-time">{moment(post.timestamp).format('YYYY-MM-DD')}</span>
                 </div>
               </div>
             ))}
