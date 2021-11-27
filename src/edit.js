@@ -24,13 +24,13 @@ function Edit(props) {
       timestamp: new Date(),
     }
 
-    if (newPost.title.trim() === '' || newPost.content.trim()) {
+    if (newPost.title.trim() === '' || newPost.content.trim() === '') {
       return
     }
     
     await agent.post('/createPost', newPost, {
       headers: {
-        type: 'application/json'
+        'Content-Type': 'application/json'
       }
     })
 
@@ -65,7 +65,7 @@ function Edit(props) {
 
         <div className="post-btn-wrapper">
           <Button variant="contained" color="primary" className="post-btn" startIcon={<SendIcon />} onClick={handleSubmit}>Submit</Button>
-          <Button variant="contained" color="secondary" className="post-cancel-btn" endIcon={<DeleteIcon />} onClick={() => props.navigate(-1)}>Cancel</Button>
+          <Button variant="contained" color="secondary" className="post-cancel-btn" endIcon={<DeleteIcon />} onClick={e => props.navigate(-1)}>Cancel</Button>
         </div>
       </div>
     </div>

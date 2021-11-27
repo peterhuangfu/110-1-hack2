@@ -8,7 +8,6 @@ import { Delete as DeleteIcon } from '@material-ui/icons'
 
 function Post(props) {
   const { pid } = useParams()
-  console.log(pid)
   const [unlock, setUnlock] = useState(false)
   const [data, setData] = useState(null)
   setTimeout(() => {
@@ -21,11 +20,7 @@ function Post(props) {
   }
 
   const delPost = async (info) => {
-    await agent.delete('/deletePost', info, {
-      headers: {
-        type: 'application/json'
-      }
-    })
+    await agent.delete(`/deletePost?pid=${info.postId}`)
       
     setTimeout(() => {
       props.navigate(-1)
@@ -35,7 +30,7 @@ function Post(props) {
   useEffect(() => {
     getPostDetail(pid)
   }, [pid])
-  console.log(data)
+  
   return (
     <div className="article-wrapper">
       <div id="goback-reply-btn">

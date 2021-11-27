@@ -38,7 +38,6 @@ const GetPostDetail = async (req, res) => {
 
   try {
     const pid = req.query.pid
-    console.log(pid)
     postInfo = await Post.findOne({ postId: pid })
     
     if (Object.keys(postInfo).length) {
@@ -62,8 +61,8 @@ const GetPostDetail = async (req, res) => {
 // 3rd API
 const CreatePost = async (req, res) => {
   try {
-    const newPost = req.body.newPost
-    await Post.save(newPost)
+    const newPost = new Post(req.body)
+    await newPost.save()
     
     res.status(200).send({
       message: 'success',
@@ -79,8 +78,7 @@ const CreatePost = async (req, res) => {
 // 4th API
 const DeletePost = async (req, res) => {
   try {
-    const newPost = req.body.newPost
-    await Post.deleteOne({ postId: newPost.postId })
+    await Post.deleteOne({ postId: req.query.pid })
     
     res.status(200).send({
       message: 'success',

@@ -15,7 +15,7 @@ function Board(props) {
 
     fetchData()
   }, [])
-  console.log(posts)
+  
   return (
     <>
       <div className="board-navbar">
