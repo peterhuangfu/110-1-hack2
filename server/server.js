@@ -28,7 +28,6 @@ mongoose.connect(process.env.MONGO_URL, dboptions)
   console.log('mongo db connection created.')
 })
 
-// routes(app)
 app.use('/api', postRoute)
 
 app.listen(port, () => {
