@@ -1,5 +1,6 @@
 import express from 'express'
-import routes from './routes'
+// import routes from './routes'
+import postRoute from './routes/post'
 import mongoose from 'mongoose'
 import { dataInit } from './upload'
 
@@ -27,7 +28,8 @@ mongoose.connect(process.env.MONGO_URL, dboptions)
   console.log('mongo db connection created.')
 })
 
-routes(app)
+// routes(app)
+app.use('/api', postRoute)
 
 app.listen(port, () => {
   console.log(`Server is up on port ${port}.`)
