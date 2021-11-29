@@ -55,26 +55,24 @@ yarn server
 
 ## 題目 Functions 說明
 ### 前端 (src / containers / App.js)
-* `post.js`
-    * `getPostDetail()`：去跟後端要某篇特定貼文的資料。
-    * `delPost()`：請求後端刪掉一筆特定的貼文。
-* `edit.js`
-    * `handleSubmit()`：將輸入的文字標題、內容，連同生成的 `postId` 與時間一起傳到後端並寫入 database。
-
-### 後端 (routes / station.js)
-
+- `post.js`
+    - `getPostDetail()`：去跟後端要某篇特定貼文的資料
+    - `delPost()`：請求後端刪掉一筆特定的貼文
+- `edit.js`
+    - `handleSubmit()`：將輸入的文字標題、內容，連同生成的 `postId` 與時間一起傳到後端並寫入 database
 
 **考試時，若發現沒有自己需要的 functions，請自己寫，因為助教不打算硬性規定函數的名字跟傳的方式。**
 
 ## Checkpoints & Requirements
 1. **連接 MongoDB 並成功開啟 server(20%)**
-    * 請修改 .env，將自己的 Mongo 連結貼上去，並在 server.js 加入適當的程式碼，讓後端可以連接到資料庫。
-    * **請不要將 Mongo 連結寫死在 server.js，因為批改測試會用助教自己的 .env，如果寫死會直接零分。**
-    * 在 server.js 加上連接 Mongo 的程式碼後，請在 callback function 加上這行程式碼 (把示範資料寫入 database)：
+    - 請修改 .env.default，將自己的 Mongo 連結貼上去，並在 server.js 加入適當的程式碼，讓後端可以連接到資料庫
+    - **請不要將 Mongo 連結寫死在 server.js，因為批改測試會用助教自己的 .env.default，如果寫死會直接零分**
+    - 在 server.js 加上連接 Mongo 的程式碼後，請在 callback function 將這行程式碼反註解 (把示範資料寫入 database)：
         ```
         dataInit()
         ```
-    * dboptions 可加可不加。
+        - 第一次開啟 server 後可以檢查 database 是否有被寫入示範資料，若有的話可以將 `dataInit()` 註解掉
+    - dboptions 可加可不加。
 
 2. **從後端取得所有貼文資料 (20%)**
     2-(1). **Backend (10%)**
@@ -99,11 +97,12 @@ yarn server
         }
         ```
     - 關於排列順序的部分，你從 DB 取得的應該會是一個 `Post` 的陣列，關於 `Post` 的 Schema 可以參考 `server/models/post.js`。請利用 `Post` 的 `timestamp` 來進行排序，使**較新的貼文順序在前，較舊的貼文順序在後**
-    - 提示：可以使用 `moment().diff()`
+    - Hint：可以使用 `moment().diff()`
     
     2-(2). **Frontend (10%)**
     - 可能需要修改的檔案：`src/board.js`
     - 要求：請修改 `src/board.js` 中的 `useEffect()` ，並利用 state hook 將 `posts` 這個 state 修改成從後端 `GET /getAllPosts` 得到的資料
+        - (instance 已加上 `/api`)
     - **此功能實作完成後，可以嘗試在 DB 創一些假資料，檢查資料以及顯示順序是否正確**
 
 3. **取得單一貼文的詳細資料 (20%)**
@@ -131,49 +130,88 @@ yarn server
     3-(2). **Frontend (10%)**
     - 可能需要修改的檔案：`src/post.js`
     - 要求：請修改 `src/post.js` 中的 `getPostDetail()` ，並利用 state hook 將 `data` 這個 state 修改成從後端 `GET /getPostDetail?pid=` 所得到的資料
+        - (instance 已加上 `/api`)
 
     
-5. **新增一篇貼文 (20%)**
+4. **新增一篇貼文 (20%)**
 
     4-(1). **Backend (10%)**
     
-    * 後端主要修改：```index.js, post.js```
-    * 請在 index.js 上加上適當的 API path 來接收前端要新增貼文的這個功能。
-    * 完成 post.js 裡面的 `createPost()`，負責處理前端傳送過來的貼文資訊，並新增到 database。
-    * 成功寫入 database 後請以 `status code 200` 回傳，同時附帶 `message: 'success'`。
-    * 若出現任何錯誤請以 `status code 403` 回傳，同時附帶 `message: 'error'`。
-    * **請注意，若回傳時沒有附帶 `message` 或是出現任何拼字不正確，會拿不到分數！(例如：將 `message` 寫成 `msg`，諸如此類。)**
+    - 可能需要修改的檔案：`server/routes/post.js`
+    - 要求：請在 `server/routes/post.js` 中新增一個適當的 API ，透過 query string 新增一則貼文到 DB 中
+    - 方法：`POST`
+    - 路徑：`/api/createPost`
+    - 參數：一則貼文必須包含下列四個參數：
+    ```json
+    {
+        postId,
+        title,
+        content,
+        timestamp
+    }
+    ```
+    - 回傳格式：
+        - 若成功在 DB 新增貼文請以 `status code 200` 回傳，並同時回傳 `message: "success"`：
+        ```json
+        {
+            "message": "success"
+        }
+        ```
+        - 若 DB 出現任何錯誤，或者 DB 沒有回應，則以 `status 403` 回傳，並同時回傳 `message: "error"`，post 回傳 null：
+        ```json
+        {
+            "message": "error",
+        }
+        ```
+        - **請注意，若回傳時沒有附帶 `message` 或是出現任何拼字不正確，會拿不到分數！(例如：將 `message` 寫成 `msg`，諸如此類。)**
     
     
     4-(2). **Frontend (10%)**
     
-    * 前端主要修改：```edit.js```
-    * 請在 ```<Textfield />``` 加上適當的 attribute，把輸入 title 跟 content 的文字存起來。
-    * 請確保 title 與 content 頭尾兩端皆沒有空白，若兩端有空白則應去除，**沒有去除就不可以成功傳送到後端**。(Hint : `trim()`)
-    * 將新的貼文透過 `/createPost` 傳送到後端 (instance 已加上 `/api`)。
-    * 每則新增的貼文必須至少包含下面四個 properties：`postId, title, content, timestamp`
-    * postId 請透過 uuid 這個套件來產生。(Hint : `uuidv4()`)
-    * timestamp 直接生成本地端時間就好。
+    - 可能需要修改的檔案：`src/edit.js`
+    - 請在 ```<Textfield />``` 加上適當的 attribute，把輸入 title 跟 content 的文字存起來
+    - 請確保 title 與 content 頭尾兩端皆沒有空白，若兩端有空白則應去除，**沒有去除就不可以成功傳送到後端**
+        - Hint : `trim()`
+    - 將新的貼文透過 `/createPost` 傳送到後端
+        - instance 已加上 `/api`
+    - 每則新增的貼文必須至少包含下面四個 properties：
+        - `postId, title, content, timestamp`
+    - postId 請透過 uuid 這個套件來產生
+        - Hint : `uuidv4()`
+    - timestamp 直接生成本地端時間就好
 
 5. **刪除一篇貼文 (20%)**
 
     5-(1). **Backend (10%)**
     
-    * 後端主要修改：```index.js, post.js```
-    * 請在 index.js 上加上適當的 API path 來處理前端要刪掉的貼文這個功能。
-    * 完成 post.js 裡面的 `deletePost()`，利用前端傳送過來的貼文資訊，從 database 刪除該筆資料。
-    * **這邊請使用 `req.query` 來做處理，這邊前端只會固定傳 `postId` 到後端！**
-    * 成功刪除後請以 `status code 200` 回傳，同時附帶 `message: 'success'`。
-    * 若出現任何錯誤請以 `status code 403` 回傳，同時附帶 `message: 'error'`。
-    * **請注意，若回傳時沒有附帶 `message` 或是出現任何拼字不正確，會拿不到分數！(例如：將 `message` 寫成 `msg`，諸如此類。)**
+    - 可能需要修改的檔案：`server/routes/post.js`
+    - 要求：請在 `server/routes/post.js` 中新增一個適當的 API ，透過 query string 刪除 DB 中指定 `postId` 的貼文資料
+    - 方法：`DELETE`
+    - 路徑：`/api/deletePost`
+    - 參數：`pid` (代表指定的`postId`)
+    - 回傳格式：
+        - 若成功從 DB 刪除資料請以 `status code 200` 回傳，並同時回傳 `message: "success"`：
+        ```json
+        {
+            "message": "success"
+        }
+        ```
+        - 若 DB 出現任何錯誤，或者 DB 沒有回應，則以 `status 403` 回傳，並同時回傳 `message: "error"`，post 回傳 null：
+        ```json
+        {
+            "message": "error",
+        }
+        ```
+        - **請注意，若回傳時沒有附帶 `message` 或是出現任何拼字不正確，會拿不到分數！(例如：將 `message` 寫成 `msg`，諸如此類)**
     
     5-(2). **Frontend (10%)**
     
-    * 前端主要修改：```post.js```
-    * 請在 ```<IconButton />``` 加上適當的 attribute，讓使用者可以點下去的時候觸發刪除的功能。
-    * 完成 `delPost()`，並將此函數綁在上述的 `IconButton` 上。
-    * 將欲刪除的貼文透過 `/deletePost?postId=` 傳送到後端 (instance 已加上 `/api`)，(或是用 params 的寫法附加在上面也可以)。
-    * **請務必配合後端的 API 寫法，將 `postId` 放在 API path 後面。**
+    - 前端可能需要修改的檔案：```src/post.js```
+    - 請在 ```<IconButton />``` 加上適當的 attribute，讓使用者可以點下去的時候觸發刪除的功能
+    - 完成 `delPost()`，並將此函數綁在上述的 `IconButton` 上。
+    - 將欲刪除的貼文透過 `/deletePost?postId=` 傳送到後端
+        - (instance 已加上 `/api`)
+        - (或是用 params 的寫法附加在上面也可以)
 
 ## Running Tests
 1. 請先確保你的前端有在 `localhost:3000` 運作；確保你的後端有在 `localhost:4000` 運作。
