@@ -76,11 +76,64 @@ yarn server
         ```
     * dboptions 可加可不加。
 
-2. 
+2. **從後端取得所有貼文資料 (20%)**
+    2-(1). **Backend (10%)**
+    - 可能需要修改的檔案：`server/routes/post.js`
+    - 要求：請在 `server/routes/post.js` 中新增一個適當的 API ，取得 DB 中的所有貼文資料後，將時間順序**由新到舊**排列後回傳
+    - 方法：`GET`
+    - 路徑：`/api/getAllPosts`
+    - 參數：無
+    - 回傳格式：
+        - 若成功從 DB 取得資料請以 `status code 200` 回傳，並同時回傳 `message: "success"`：
+        ```json
+        {
+            "message": "success",
+            "data": [Post]
+        }
+        ```
+        - 若 DB 出現任何錯誤，或者 DB 回傳空陣列，則以 `status 403` 回傳，並同時回傳 `message: "error"`，data 回傳 null：
+        ```json
+        {
+            "message": "error",
+            "data": null
+        }
+        ```
+    - 關於排列順序的部分，你從 DB 取得的應該會是一個 `Post` 的陣列，關於 `Post` 的 Schema 可以參考 `server/models/post.js`。請利用 `Post` 的 `timestamp` 來進行排序，使**較新的貼文順序在前，較舊的貼文順序在後**
+    - 提示：可以使用 `moment().diff()`
+    
+    2-(2). **Frontend (10%)**
+    - 可能需要修改的檔案：`src/board.js`
+    - 要求：請修改 `src/board.js` 中的 `useEffect()` ，並利用 state hook 將 `posts` 這個 state 修改成從後端 `GET /getAllPosts` 得到的資料
+    - **此功能實作完成後，可以嘗試在 DB 創一些假資料，檢查資料以及顯示順序是否正確**
 
-3. 
+3. **取得單一貼文的詳細資料 (20%)**
+    3-(1). **Backend (10%)**
+    - 可能需要修改的檔案：`server/routes/post.js`
+    - 要求：請在 `server/routes/post.js` 中新增一個適當的 API ，透過 query string 取得 DB 中指定 `postId` 的貼文資料並回傳
+    - 方法：`GET`
+    - 路徑：`/api/getPostDetail`
+    - 參數：`pid` (代表指定的`postId`)
+    - 回傳格式：
+        - 若成功從 DB 取得資料請以 `status code 200` 回傳，並同時回傳 `message: "success"`：
+        ```json
+        {
+            "message": "success",
+            "post": Post
+        }
+        ```
+        - 若 DB 出現任何錯誤，或者 DB 沒有回傳資料，則以 `status 403` 回傳，並同時回傳 `message: "error"`，post 回傳 null：
+        ```json
+        {
+            "message": "error",
+            "post": null
+        }
+        ```
+    3-(2). **Frontend (10%)**
+    - 可能需要修改的檔案：`src/post.js`
+    - 要求：請修改 `src/post.js` 中的 `getPostDetail()` ，並利用 state hook 將 `data` 這個 state 修改成從後端 `GET /getPostDetail?pid=` 所得到的資料
 
-4. **新增一篇貼文 (20%)**
+    
+5. **新增一篇貼文 (20%)**
 
     4-(1). **Backend (10%)**
     

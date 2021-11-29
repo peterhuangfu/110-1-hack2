@@ -5,7 +5,7 @@ import moment from 'moment'
 const router = express.Router()
 
 const sortData = (data) => {
-  return (data.sort((a, b) => moment(a.timestamp).diff(moment(b.timestamp))))
+  return (data.sort((a, b) => moment(b.timestamp).diff(moment(a.timestamp))))
 }
 
 // 1st API
