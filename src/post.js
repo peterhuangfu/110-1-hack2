@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import moment from 'moment'
-import agent from './agent'
+import instance from './instance'
 
 import { useParams } from 'react-router-dom'
 import { IconButton, Button, Typography } from '@material-ui/core'
@@ -15,12 +15,12 @@ function Post(props) {
   }, 300)
 
   const getPostDetail = async (pid) => {
-    const postContent = await agent.get(`/getPostDetail?pid=${pid}`)
+    const postContent = await instance.get(`/getPostDetail?pid=${pid}`)
     setData(postContent.data.post)
   }
 
   const delPost = async (info) => {
-    await agent.delete(`/deletePost?pid=${info.postId}`)
+    await instance.delete(`/deletePost?pid=${info.postId}`)
       
     setTimeout(() => {
       props.navigate(-1)

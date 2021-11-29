@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import agent from './agent'
+import instance from './instance'
 
 import { Button, TextField } from '@material-ui/core'
 import { Delete as DeleteIcon, Send as SendIcon } from '@material-ui/icons'
@@ -28,7 +28,7 @@ function Edit(props) {
       return
     }
     
-    await agent.post('/createPost', newPost, {
+    await instance.post('/createPost', newPost, {
       headers: {
         'Content-Type': 'application/json'
       }

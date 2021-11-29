@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import agent from './agent'
+import instance from './instance'
 import moment from 'moment'
 
 import { Button } from '@material-ui/core'
@@ -9,7 +9,7 @@ function Board(props) {
   
   useEffect(() => {
     const fetchData = async () => {
-      const postRes = await agent.get('/getAllPosts')
+      const postRes = await instance.get('/getAllPosts')
       setPosts(postRes.data.data)
     }
 
