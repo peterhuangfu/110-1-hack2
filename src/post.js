@@ -8,11 +8,7 @@ import { Delete as DeleteIcon } from '@material-ui/icons'
 
 function Post(props) {
   const { pid } = useParams()
-  const [unlock, setUnlock] = useState(false)
   const [data, setData] = useState(null)
-  setTimeout(() => {
-    setUnlock(true)
-  }, 300)
 
   const getPostDetail = async (pid) => {
     const postContent = await instance.get(`/getPostDetail?pid=${pid}`)
@@ -37,7 +33,7 @@ function Post(props) {
         <Button variant="contained" color="primary" onClick={() => props.navigate(-1)}>Back</Button>
       </div>
 
-      {unlock ?
+      {data ?
         <div className="article-container">
           <div className="article-title">
             <div>
@@ -59,7 +55,7 @@ function Post(props) {
               </div>     
             </div>
           </div>
-        </div> : <div></div>
+        </div> : <div className="article-container"><h1>Post not found</h1></div>
       }
     </div>
   );
