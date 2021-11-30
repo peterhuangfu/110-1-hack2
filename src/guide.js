@@ -7,9 +7,6 @@ import NoMatch from './noMatch'
 
 import { Routes, Route, useNavigate } from 'react-router-dom'
 
-import './styles/index.css'
-import './styles/board.css'
-
 function Guide(props) {
   const navigate = useNavigate()
   

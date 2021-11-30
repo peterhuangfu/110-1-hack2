@@ -5,8 +5,6 @@ import { Button, TextField } from '@material-ui/core'
 import { Delete as DeleteIcon, Send as SendIcon } from '@material-ui/icons'
 import { v4 as uuidv4 } from 'uuid'
 
-import './styles/post.css'
-
 function Edit(props) {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
