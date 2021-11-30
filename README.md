@@ -18,8 +18,39 @@ yarn add -D @babel/cli @babel/core @babel/node @babel/preset-env nodemon
 
 5. 檔案結構如下:
 ```
-
+.
+├── README.md
+├── package.json
+├── public
+│   ├── favicon.ico
+│   ├── index.html
+│   ├── manifest.json
+│   └── robots.txt
+├── server
+│   ├── models
+│   │   └── post.js
+│   ├── routes
+│   │   └── post.js
+│   ├── server.js
+│   └── upload.js
+├── src
+│   ├── App.css
+│   ├── App.js
+│   ├── appbar.js
+│   ├── board.js
+│   ├── edit.js
+│   ├── guide.js
+│   ├── index.css
+│   ├── index.js
+│   ├── instance.js
+│   ├── logo.png
+│   ├── noMatch.js
+│   ├── post.js
+│   ├── reportWebVitals.js
+│   ├── setupTests.js
+└── yarn.lock
 ```
+
 6. 欲執行 frontend，打開 terminal / cmd 執行：
 ```
 cd wp1101/hack2
@@ -48,10 +79,10 @@ yarn server
 
 ## 題目的檔案架構
 ### 前端
-![]()
+![](https://i.imgur.com/xXmkiKM.png)
 
 ### 後端
-![]()
+![](https://i.imgur.com/ANmXYlA.png)
 
 ## 題目 Functions 說明
 ### 前端 (src / containers / App.js)
@@ -59,7 +90,7 @@ yarn server
     - `getPostDetail()`：去跟後端要某篇特定貼文的資料
     - `delPost()`：請求後端刪掉一筆特定的貼文
 - `edit.js`
-    - `handleSubmit()`：將輸入的文字標題、內容，連同生成的 `postId` 與時間一起傳到後端並寫入 database
+    - `handleSubmit()`：將輸入的文字標題、內容，連同生成的 `postId`、時間一起傳到後端並寫入 database
 
 **考試時，若發現沒有自己需要的 functions，請自己寫，因為助教不打算硬性規定函數的名字跟傳的方式。**
 
@@ -67,12 +98,12 @@ yarn server
 1. **連接 MongoDB 並成功開啟 server(20%)**
     - 請修改 .env.default，將自己的 Mongo 連結貼上去，並在 server.js 加入適當的程式碼，讓後端可以連接到資料庫
     - **請不要將 Mongo 連結寫死在 server.js，因為批改測試會用助教自己的 .env.default，如果寫死會直接零分**
-    - 在 server.js 加上連接 Mongo 的程式碼後，請在 callback function 將這行程式碼反註解 (把示範資料寫入 database)：
+    - 在 server.js 加上連接 Mongo 的程式碼後，請在 callback function 加上這行程式碼 (把示範資料寫入 database)：
         ```
         dataInit()
         ```
         - 第一次開啟 server 後可以檢查 database 是否有被寫入示範資料，若有的話可以將 `dataInit()` 註解掉
-    - dboptions 可加可不加。
+    - dboptions 可加可不加
 
 2. **從後端取得所有貼文資料 (20%)**
     2-(1). **Backend (10%)**
@@ -129,7 +160,7 @@ yarn server
         ```
     3-(2). **Frontend (10%)**
     - 可能需要修改的檔案：`src/post.js`
-    - 要求：請修改 `src/post.js` 中的 `getPostDetail()` ，並利用 state hook 將 `data` 這個 state 修改成從後端 `GET /getPostDetail?pid=` 所得到的資料
+    - 要求：請修改 `src/post.js` 中的 `getPostDetail()` ，並利用 state hook 將 `data` 這個 state 修改成從後端 `GET /getPostDetail` 所得到的資料。接著修改 `useEffect()` 使得載入這個 component 時呼叫 `getPostDetail()` 以更新 state。
         - (instance 已加上 `/api`)
 
     
@@ -172,13 +203,14 @@ yarn server
     - 請在 ```<Textfield />``` 加上適當的 attribute，把輸入 title 跟 content 的文字存起來
     - 請確保 title 與 content 頭尾兩端皆沒有空白，若兩端有空白則應去除，**沒有去除就不可以成功傳送到後端**
         - Hint : `trim()`
-    - 將新的貼文透過 `/createPost` 傳送到後端
+    - 完成 `handleSubmit()`，將新的貼文透過 `POST /createPost` 傳送到後端
         - instance 已加上 `/api`
     - 每則新增的貼文必須至少包含下面四個 properties：
         - `postId, title, content, timestamp`
     - postId 請透過 uuid 這個套件來產生
         - Hint : `uuidv4()`
     - timestamp 直接生成本地端時間就好
+    - 成功新增貼文後必須返回貼文列表，並顯示更新後的所有貼文 (`handleSubmit()` 裡面的 `setTimeout` 已經幫你們寫好了)
 
 5. **刪除一篇貼文 (20%)**
 
@@ -209,14 +241,14 @@ yarn server
     - 前端可能需要修改的檔案：```src/post.js```
     - 請在 ```<IconButton />``` 加上適當的 attribute，讓使用者可以點下去的時候觸發刪除的功能
     - 完成 `delPost()`，並將此函數綁在上述的 `IconButton` 上。
-    - 將欲刪除的貼文透過 `/deletePost?postId=` 傳送到後端
+    - 將欲刪除的貼文透過 `DELETE /deletePost` 傳送到後端
         - (instance 已加上 `/api`)
-        - (或是用 params 的寫法附加在上面也可以)
+    - 成功刪除貼文後必須返回貼文列表，並顯示更新後的所有貼文 (`delPost()` 裡面的 `setTimeout` 已經幫你們寫好了)
 
 ## Running Tests
 1. 請先確保你的前端有在 `localhost:3000` 運作；確保你的後端有在 `localhost:4000` 運作。
 
-2. 在 `wp1101/hack2` 底下輸入 `yarn test`，並等待測試結果。**
+2. 在 `wp1101/hack2` 底下輸入 `yarn test`，並等待測試結果。
 
 ## Push your code to Github
 ```

@@ -1,5 +1,4 @@
 import express from 'express'
-// import routes from './routes'
 import postRoute from './routes/post'
 import mongoose from 'mongoose'
 import { dataInit } from './upload'

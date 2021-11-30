@@ -1,9 +1,6 @@
 import React from 'react'
 import Logo from './logo.png'
-import {
-  AppBar,
-  Toolbar
-} from '@material-ui/core'
+import { AppBar, Toolbar } from '@material-ui/core'
 
 function Appbar(props) {
   return (
@@ -12,7 +9,7 @@ function Appbar(props) {
         <div className="appbar-left">
           <img className="logo" src={Logo} alt="Logo" />
           <span className="app-name" onClick={() => props.navigate('/')}>
-            110-1 Hackathon 2
+            Web Programming 110-1 Hackathon 2
           </span>
         </div>
       </Toolbar>

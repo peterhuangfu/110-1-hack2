@@ -19,21 +19,21 @@ function Board(props) {
   return (
     <>
       <div className="board-navbar">
-        <div style={{ fontWeight: 'bold', fontSize: 28 }}>Board</div>
-        <Button className="board-launch-btn" variant="contained" color="primary" onClick={() => props.navigate('/new')}>New Post</Button>
+        <div style={{ fontWeight: 'bold', fontSize: 28 }}>Post List</div>
+        <Button className="board-launch-btn" variant="contained" color="primary" id="pid-post-btn" onClick={() => props.navigate('/new')}>New Post</Button>
       </div>
       
       <div className="board-discuss-container">
         {posts.length ?
           <div className="articles-container">
             {posts.map((post, i) => (
-              <div className="article-post" key={i}>
+              <div className="article-post" key={i} id={`pid-${i}`}>
                 <div className="article-prefix">
                   <span className="each-tag">【Hackathon 2】</span> &nbsp;
-                  <span className="each-id" onClick={() => props.navigate(`/post/${post.postId}`)}>{post.title}</span>
+                  <span className="each-id" id={`pid-${i}-title`} onClick={() => props.navigate(`/post/${post.postId}`)}>{post.title}</span>
                 </div>
                 <div className="article-postfix">
-                  <span className="each-time">{moment(post.timestamp).format('YYYY-MM-DD')}</span>
+                  <span className="each-time" id={`pid-${i}-time`}>{moment(post.timestamp).format('YYYY-MM-DD')}</span>
                 </div>
               </div>
             ))}

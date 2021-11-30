@@ -35,25 +35,19 @@ function Post(props) {
 
       {data ?
         <div className="article-container">
-          <div className="article-title">
-            <div>
-              {data ? data.title : ''}
-              <IconButton onClick={() => delPost(data)} className="post-delete" size="small">
-                <DeleteIcon fontSize="inherit" />
-              </IconButton>
-            </div>
-            <div className="article-author-time-container">
-              <span>{moment(data ? data.timestamp : new Date()).format('YYYY-MM-DD HH:mm:ss')}</span>
-            </div>
-
-            <div className="article-content-container">
-              <div className="accordion-container">
-                <Typography className="article-subtitle">{data ? data.title : ''}</Typography>
-                <Typography component={'span'}>
-                  {data ? data.content : ''}
-                </Typography>
-              </div>     
-            </div>
+          <div className="article-title" id="pid-detail-title">
+            {data.title}
+            <IconButton onClick={() => delPost(data)} className="post-delete" size="small" id="pid-detail-del-btn">
+              <DeleteIcon fontSize="inherit" />
+            </IconButton>
+          </div>
+          <div className="article-time">
+            <span id="pid-detail-time">{moment(data.timestamp).format('YYYY-MM-DD HH:mm:ss')}</span>
+          </div>
+          <div className="article-content-container">
+            <Typography component={'span'} id="pid-detail-content">
+              {data.content}
+            </Typography>
           </div>
         </div> : <div className="article-container"><h1>Post not found</h1></div>
       }

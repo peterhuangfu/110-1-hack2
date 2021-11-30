@@ -16,7 +16,7 @@ function Edit(props) {
   }
 
   const handleSubmit = async () => {
-    const postId = uuidv4();
+    const postId = uuidv4()
     const newPost = {
       postId: postId,
       title: title,
@@ -35,14 +35,14 @@ function Edit(props) {
     })
 
     setTimeout(() => {
-      props.navigate(-1);
+      props.navigate(-1)
     }, 300)
   }
 
   return (
     <div className="post-wrapper">
       <div className="post-text-container">
-        <div style={{ fontWeight: 'Bold', fontSize: 18 }}>New Post</div>
+        <div style={{ fontWeight: 'Bold', fontSize: 18 }}>Create a New Post</div>
 
         <div className="post-title">
           <TextField
@@ -51,6 +51,7 @@ function Edit(props) {
             size="small"
             variant="outlined"
             className="post-title"
+            id="pid-create-title"
           />
         </div>
 
@@ -60,11 +61,13 @@ function Edit(props) {
             label="Content"
             variant="outlined"
             className="post-content-editor"
+            id="pid-create-content"
+            multiline
           />
         </div>
 
         <div className="post-btn-wrapper">
-          <Button variant="contained" color="primary" className="post-btn" startIcon={<SendIcon />} onClick={handleSubmit}>Submit</Button>
+          <Button variant="contained" color="primary" className="post-btn" startIcon={<SendIcon />} id="pid-create-submit-btn" onClick={handleSubmit}>Submit</Button>
           <Button variant="contained" color="secondary" className="post-cancel-btn" endIcon={<DeleteIcon />} onClick={e => props.navigate(-1)}>Cancel</Button>
         </div>
       </div>
