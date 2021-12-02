@@ -1,4 +1,5 @@
-import Post from './models/post'
+const mongoose = require('mongoose')
+const Post = require('./server/models/postRequire')
 
 const example = [
   {
@@ -29,10 +30,18 @@ const example = [
 
 const dataInit = async () => {
   const checkData = await Post.find()
-  if (checkData.length !== 4) {
-    await Post.deleteMany({})
-    await Post.insertMany(example)
-  }
+  await Post.deleteMany({})
+  await Post.insertMany(example)
 }
 
-export { dataInit }
+const dboptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}
+
+mongoose.connect('mongodb+srv://Peter:870213@cluster1.clsel.gcp.mongodb.net/hack2?retryWrites=true&w=majority', dboptions)
+.then(async res => {
+  await dataInit()
+  console.log('db initialized.')
+  mongoose.connection.close()
+})

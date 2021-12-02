@@ -6,7 +6,7 @@
 
 2. 在 `/wp1101/hack2/` 目錄，安裝底下套件：
 ```
-yarn add react-router-dom uuid axios cors dotenv express mongoose @material-ui/core @material-ui/icons
+yarn add react-router-dom axios moment cypress cors dotenv express mongoose uuid @material-ui/core @material-ui/icons
 ```
 3. 同樣在 hack2 目錄，安裝底下套件：
 ```
@@ -20,7 +20,10 @@ yarn add -D @babel/cli @babel/core @babel/node @babel/preset-env nodemon
 ```
 .
 ├── README.md
-├── package.json
+├── cypress
+│   └── integration
+│       └── public.spec.js
+├── cypress.json
 ├── public
 │   ├── favicon.ico
 │   ├── index.html
@@ -33,22 +36,21 @@ yarn add -D @babel/cli @babel/core @babel/node @babel/preset-env nodemon
 │   │   └── post.js
 │   ├── server.js
 │   └── upload.js
-├── src
-│   ├── App.css
-│   ├── App.js
-│   ├── appbar.js
-│   ├── board.js
-│   ├── edit.js
-│   ├── guide.js
-│   ├── index.css
-│   ├── index.js
-│   ├── instance.js
-│   ├── logo.png
-│   ├── noMatch.js
-│   ├── post.js
-│   ├── reportWebVitals.js
-│   ├── setupTests.js
-└── yarn.lock
+└── src
+    ├── App.css
+    ├── App.js
+    ├── appbar.js
+    ├── board.js
+    ├── edit.js
+    ├── guide.js
+    ├── index.css
+    ├── index.js
+    ├── instance.js
+    ├── logo.png
+    ├── noMatch.js
+    ├── post.js
+    ├── reportWebVitals.js
+    └── setupTests.js
 ```
 
 6. 欲執行 frontend，打開 terminal / cmd 執行：
@@ -74,7 +76,7 @@ yarn server
 
 **<span style="color:red">[Warning] 給同學的示範資料，跟助教批改用的資料不會一樣，所以請同學在寫的時候注意，不要把前端的資料寫死，不然一定拿不到分數。</span>**
 
-以下是每一個站的詳細資料型態：
+以下是每一筆資料的詳細資料型態：
 ![](https://i.imgur.com/jJZSP7v.png)
 
 ## 題目的檔案架構
@@ -96,13 +98,14 @@ yarn server
 
 ## Checkpoints & Requirements
 1. **連接 MongoDB 並成功開啟 server(20%)**
-    - 請修改 .env.default，將自己的 Mongo 連結貼上去，並在 server.js 加入適當的程式碼，讓後端可以連接到資料庫
-    - **請不要將 Mongo 連結寫死在 server.js，因為批改測試會用助教自己的 .env.default，如果寫死會直接零分**
-    - 在 server.js 加上連接 Mongo 的程式碼後，請在 callback function 加上這行程式碼 (把示範資料寫入 database)：
+    - 請參考 .env.defaults 然後加入自己的 .env，將自己的 Mongo 連結貼上去，並在 server.js 加入適當的程式碼，讓後端可以連接到資料庫
+    - **請不要將 Mongo 連結寫死在 server.js，因為批改測試會用助教自己的 .env.，如果寫死會直接零分**
+    - 在 server.js 加上連接 Mongo 的程式碼後，請在 callback function 加上這兩行程式碼 (把 example data 寫入 database)：
         ```
-        dataInit()
+        if (process.env.MODE === 'EXAM')
+            dataInit()
         ```
-        - 第一次開啟 server 後可以檢查 database 是否有被寫入示範資料，若有的話可以將 `dataInit()` 註解掉
+        - 第一次開啟 server 後可以檢查 database 是否有被寫入四筆 example data，**若有的話請將上述這兩行程式碼註解掉，免得資料庫的資料一直被洗掉**
     - dboptions 可加可不加
 
 2. **從後端取得所有貼文資料 (20%)**
@@ -248,12 +251,18 @@ yarn server
 ## Running Tests
 1. 請先確保你的前端有在 `localhost:3000` 運作；確保你的後端有在 `localhost:4000` 運作。
 
-2. 在 `wp1101/hack2` 底下輸入 `yarn test`，並等待測試結果。
+2. 將一開始註解掉的這兩行程式碼**反註解 (請注意，如果 db 裡面的資料數量剛好是四筆的話，請先把資料數弄成不是四筆的狀態，這樣這個函數才會起作用)**：
+    ```
+    if (process.env.MODE === 'EXAM')
+        dataInit()
+    ```
+
+3. 在 `wp1101/hack2` 底下輸入 `yarn test`，並等待測試結果。
 
 ## Push your code to Github
 ```
 cd wp1101
 git add hack2
 git commit -m "commit message"
-git push origin master
+git push
 ```

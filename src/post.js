@@ -29,8 +29,8 @@ function Post(props) {
   
   return (
     <div className="article-wrapper">
-      <div id="goback-reply-btn">
-        <Button variant="contained" color="primary" onClick={() => props.navigate(-1)}>Back</Button>
+      <div>
+        <Button variant="contained" color="primary" id="goback-reply-btn" onClick={() => props.navigate(-1)}>Back</Button>
       </div>
 
       {data ?

@@ -23,7 +23,8 @@ const dboptions = {
 
 mongoose.connect(process.env.MONGO_URL, dboptions)
 .then(async res => {
-  // dataInit()
+  if (process.env.MODE === 'EXAM')
+    dataInit()
   console.log('mongo db connection created.')
 })
 
